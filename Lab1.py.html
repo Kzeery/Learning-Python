@@ -1,0 +1,436 @@
+
+# coding: utf-8
+
+# ## COMP SCI 1MD3 Introduction to Programming, Spring 2018
+# ### Ming Ming Tan (instructor), Michael Liut, Trevor Ngo (TAs)
+# ### Lab 1 Assigned Monday May 7, Due Monday 14 May 1pm
+# ### Maximum grade: 26/22
+# 
+# The purpose of this lab is to:
+# * Practice writing syntactically correct expressions in Python
+# * Practice writing if statements
+# * Practice writing `while` loops and `for` loops
+# * Work with tuple, strings, lists, sets and dictionaries
+# * Practice writing functions
+
+# #### Question 1: Time Conversion 1 (2 points)
+# 
+# Write a Python function that computes number of minutes in the period of `d` days,  `h` hours, and `m` minutes.
+
+# In[4]:
+
+
+def minutes(d, h, m):
+    total_time = (d*60*24) + (h*60) + m
+    
+    return total_time
+
+
+# The following are some test cells which you can use to check if your code is producing the expected answer.
+
+# In[5]:
+
+
+minutes(0, 0, 5)==5
+minutes(0, 1,0)==60
+minutes(1, 0, 0)==1440
+
+
+# #### Question 2: Time Conversion 2 (2 points)
+# 
+# Write a Python function that computes the number of days, hours, and minutes in a given number of minutes (essentially, do the opposite of question 1). 
+# 
+# Examples: 
+# 
+# `daysHoursMinutes(60)` should return `(0,1,0)`
+# 
+# `daysHoursMinutes(1440)` should return `(1,0,0)`
+
+# In[18]:
+
+
+def daysHoursMinutes(m):
+    d = m//1440
+    h = (m%1440)//60
+    m = m - (d*1440) - (h*60) 
+    
+    
+    return (d, h, m)
+
+
+# Use the following two cells to check if your answer is correct:
+
+# In[11]:
+
+
+daysHoursMinutes(241) == (0, 4, 1)
+
+
+# In[17]:
+
+
+daysHoursMinutes(60) == (0, 1, 0)
+
+
+# #### Question 3: Quadratic Formula (2 points)
+# 
+# The solutions to an equation of the form $$ ax^2 + bx + c = 0$$ is: $$x_{1}, x_{2} = \frac{-b\pm\sqrt{b^2-4ac}}{2a} $$
+# 
+# <br> There are two solutions: one for adding, and one for subtracting the radical.
+# <br> Write a program that takes a, b, and c as input and solves for $x_1$ and $x_2$.
+# <br>You may assume that $ b^2 - 4ac \geq 0$. Let $x_1$ be the solution where you add the term under the square root term, and $x_2$ be the solution where you subtract the square root term.
+
+# In[38]:
+
+
+def quadratic(a, b, c):
+    x1= (-b + (b**2 -4*a*c)**0.5)/(2*a)
+    x2= (-b - (b**2 -4*a*c)**0.5)/(2*a)
+    return (x1, x2)
+
+
+# In[39]:
+
+
+quadratic(1, 2, 1) == (-1.0, -1.0)
+
+
+# In[40]:
+
+
+quadratic(2, 5, -3) == (0.5, -3.0)
+
+
+# #### Question 4a: Income Tax (1 points)
+# 
+# You are required to pay  a  certain  income tax  rate  depending  on  income  level.  
+# The following table illustrates the rate: 
+# 
+# | Income     |   Rate |
+# | :-------------:|:-----------------:| 
+# |0-10000|15%|
+# |10001-20000|20%|
+# |20001-30000|30%|
+# |>30000|40%|
+# 
+# For instance, if your income is $15000$, then the amount of tax you need to pay is $15000 * 0.20 = 3000.$
+# 
+# Write a function `tax()` that takes income (a number) as input and returns the corresponding tax. 
+
+# In[46]:
+
+
+def tax(a):
+    if(a>=0 and a < 10001):
+        return a * 0.15
+    elif(a> 10000 and a< 20001):
+        return a * 0.20
+    elif(a> 20000 and a < 30001):
+        return a * 0.30
+    else:
+        return a * 0.40
+        
+
+
+# In[47]:
+
+
+tax(3000)==450
+
+
+# In[48]:
+
+
+tax(50000)==20000
+
+
+# #### Question 4b: Pay (2 points)
+# 
+# Write a function `pay()` that takes inputs an hourly wage and the number of hours an employee worked in the last week
+# 
+# The function should compute and return the employee's pay. 
+# 
+# Overtime work should be paid in this way: Any hour beyond 40 but less than or equal 60 should be paid 1.5 times the regular hourly wage. Any hours beyond 60 should be paid at 2 times the regular hourly wage.
+# 
+# For instance:
+# 
+# pay(10,35) should return 350
+
+# In[53]:
+
+
+def pay(wage, hours):
+    if(hours >40 and hours<=60):
+        return (40 * wage) + ((hours - 40) * 1.5 * wage)
+    elif(hours >60):
+        return (40* wage) + (20* 1.5* wage) + (hours - 60) * (2 * wage)
+        
+    
+    
+    return wage * hours
+
+
+# In[55]:
+
+
+pay(10,45)==475
+
+
+# In[54]:
+
+
+pay(10,61)==720
+
+
+# #### Question 5: Product (1 points)
+# 
+# Write a function `product()` that takes a list of numerical values as input, and returns the product of all numbers in the list. 
+# For example, 
+# 
+# `product([2, 3, 4])` should return 24
+# 
+# `product([])` should return 1
+
+# In[56]:
+
+
+def product(array):
+    a = 1
+    for i in array:
+        a *= i
+    return a
+
+
+# In[57]:
+
+
+product([1,2,3])==6
+
+
+# In[58]:
+
+
+product([2,2,2,2])==16
+
+
+# #### Question 6: Divisors (2 points)
+# 
+# Write a function `divisors()` that takes a positive integer n as input and returns the list of all positive divisors of n.
+# 
+# For example:
+# 
+# `divisors(1)` should return `[1]`
+# 
+# `divisors(11)` should return `[1,11]`
+
+# In[66]:
+
+
+def divisors(a):
+    b = []
+    for i in range(1, a+1):
+        if(a%i == 0):
+            b.append(i)
+    return b
+
+
+# In[67]:
+
+
+divisors(56) == [1, 2, 4, 7, 8, 14, 28, 56]
+
+
+# ### Question 7: Word Reversal (2 points)
+# 
+# Write a function `revWords()` that takes as argument a space-separated string with no punctuations and only the 26 ISO basic Latin characters. This function should reverse every single word and return the new sentence. Note: only each individual word is reversed.
+# 
+# For example:
+# 
+# `revWords("hello world")` should return `"olleh dlrow"`
+# 
+# `revWords("Ill make an offer he cant refuse")` should return `"llI ekam na reffo eh tnac esufer"`
+# 
+# 
+# 
+
+# In[124]:
+
+
+def revWords(a):
+    a = a[::-1]
+    aWords = a.split(" ")
+    aWords = aWords[-1::-1]
+    output = ' '.join(aWords)
+    print(output)
+    return output
+        
+
+
+# In[125]:
+
+
+revWords("hello dolly this is lois") == "olleh yllod siht si siol"
+
+
+# In[126]:
+
+
+revWords("tomorrow I love you tomorrow") == "worromot I evol uoy worromot"
+
+
+# #### Question 8: Halved (1 points)
+# 
+# Write a function `halved()` that takes as input a positive integer $n$ and answers this question: How many times can $n$ be halved (using integer division) before reaching 1? This value should be returned. 
+# 
+# For example:
+# 
+# `halved(4)` should return 2
+# 
+# `halved(11)` should return 3
+
+# In[132]:
+
+
+def halved(a):
+    i = 0
+    while(a != 1):
+        a = a//2
+        i += 1
+    return i
+
+
+# In[133]:
+
+
+halved(128)==7
+
+
+# In[134]:
+
+
+halved(9)==3
+
+
+# #### Question 9: Palindromes (3 points)
+# 
+# A palindrome is a word x for which it holds x = rev(x); in other words, x is equal to itself when reversed.
+# 
+# Write a function `hasPalindrome(s)` which takes as input a string of character _numbers_ and returns the boolean value if a palindrome exists for that string combination of character numbers.
+# 
+# Hint: you may want to use the built-in `eval()` function. An important data structure that you learn this week will be of help with this problem.
+# 
+# `hasPalindrome("1231")` should return `False`
+# 
+# `hasPalindrome("12312")` should return `True`
+
+# In[159]:
+
+
+def hasPalindrome(a):
+    i = 0
+    if(len(a)%2 == 0):
+        while(i<10):
+            if(a.count(str(i))%2 == 0):
+                 i += 1
+            else:
+                return False
+    else:
+        j = 0
+        while(i<10):
+            if(a.count(str(i))%2 == 0):
+                 i += 1
+            else:
+                i += 1
+                j += 1
+        if(j%2 == 0):
+            return False
+    return True
+
+
+# In[160]:
+
+
+hasPalindrome("23232244") == True
+# ...because a possible palindrome is "22344322"
+
+
+# ### Question 10a: University Majors (2 points)
+# 
+# Given a dictionary that tells you a person's major, write a Python function that, given a person's name and a major, returns `True` if that person is majoring in that subject, and `False` otherwise.
+
+# In[194]:
+
+
+def check_major(name, major, majors_dict):
+    if(majors_dict.get(name) == major):
+        return True
+        
+    return False
+
+
+# In[195]:
+
+
+majors_1 = {"Josh": "Engineering", "Carol": "Accounting", "Douglas": "Art History", "Irene": "Engineering", "Robert": "Engineering", "Christine": "Accounting", "Charles": "Accounting"}
+check_major("Douglas", "Art History", majors_1) == True
+
+
+# In[196]:
+
+
+majors_1 = {"Josh": "Engineering", "Carol": "Accounting", "Douglas": "Art History", "Irene": "Engineering", "Robert": "Engineering", "Christine": "Accounting", "Charles": "Accounting"}
+check_major("Josh", "Accounting", majors_1) == False
+
+
+# ### Question 10b: University Majors II (2 points)
+# 
+# Given a dictionary that instead maps majors to lists of names, repeat the above question.
+
+# In[139]:
+
+
+def check_major2(name, major, major_dictionary):
+    if(name in major_dictionary.get(major)):
+        return True
+    return False
+
+
+# In[140]:
+
+
+majors_2 = {"Engineering": ["Josh", "Robert", "Irene"], "Accounting": ["Carol", "Christine", "Charles"], "Art History": ["Douglas"]}
+check_major2("Douglas", "Art History", majors_2) == True
+
+
+# #### Bonus Question: Network (4 points)
+# Let's assume that students who work together on the assignment are friends. We suppose that two students sharing a friend must be friends themselves: 
+# If Student 0 is a friend of Student 1 and  Student 1 is a friend of Student 2, then Student 0 and Student 2 must be friends. Using this rule, we can partition the students into circles of friends. 
+# 
+# Implement a function `networks()` that takes two input arguments. The first is the number of $n$ students in the class. We assume students are identified using integers 0 through n-1. The second input argument is a list of tuple objects that define friendships. 
+# For example, `(1,2)` indicates that Student 1 and Student 2 are friends. 
+# 
+# The function `networks()` should return a set of tuple objects that defines the circle of friends.
+# 
+# For example,
+# 
+# `networks(5, [(0,1),(1,2), (3,4)])` should return `{(0, 1, 2), (3, 4)}` <br>
+# `networks(6, [(0,2), (1,2), (3,4), (4, 5)])` should return `{(0, 1, 2), (3, 4, 5)}`
+
+# In[134]:
+
+
+def networks(n, tupList):
+    j = 0
+    while(j<len(tupList)):
+        i = j + 1
+        while(i < len(tupList)):
+            if((len(tuple(set(tupList[j]).intersection(set(tupList[i]))))) > 0):
+                tupList[j]= tuple(set((tupList[j] + tupList[i])))
+                del tupList[i]
+            else:
+                i += 1
+        j += 1
+        
+    
+    return set(tupList)
+
